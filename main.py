@@ -1,12 +1,16 @@
 # This entrypoint file to be used in development. Start by reading README.md
 from RPS_game import play, mrugesh, abbey, quincy, kris, human, random_player
-from RPS import player
+from RPS import player, data
 from unittest import main
 
-play(player, quincy, 1000)
-play(player, abbey, 1000)
-play(player, kris, 1000)
-play(player, mrugesh, 1000)
+play(player, quincy, 10)
+print(data)
+play(player, abbey, 10)
+print(data)
+play(player, kris, 10)
+print(data)
+play(player, mrugesh, 10)
+print(data)
 
 # Uncomment line below to play interactively against a bot:
 # play(human, abbey, 20, verbose=True)
