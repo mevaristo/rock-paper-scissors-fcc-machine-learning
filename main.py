@@ -1,16 +1,13 @@
 # This entrypoint file to be used in development. Start by reading README.md
 from RPS_game import play, mrugesh, abbey, quincy, kris, human, random_player
-from RPS import player, data
+from RPS import player
 from unittest import main
 
-play(player, quincy, 10)
-print(data)
-play(player, abbey, 10)
-print(data)
-play(player, kris, 10)
-print(data)
-play(player, mrugesh, 10)
-print(data)
+play(player, quincy, 100)
+play(player, abbey, 100)
+play(player, kris, 100)
+play(player, mrugesh, 100)
+
 
 # Uncomment line below to play interactively against a bot:
 # play(human, abbey, 20, verbose=True)
@@ -22,3 +19,9 @@ print(data)
 
 # Uncomment line below to run unit tests automatically
 # main(module='test_module', exit=False)
+
+# my tests
+
+# from RPS import calculate_next_state, transition_matrix
+# state_vector = [1/2, 1/4, 1/4]
+# print(calculate_next_state(state_vector=state_vector, transition_matrix=transition_matrix))
