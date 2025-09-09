@@ -26,7 +26,6 @@ play(player, abbey, 20000)
 # state_vector = [1/2, 1/4, 1/4]
 # print(calculate_next_state(state_vector=state_vector, transition_matrix=transition_matrix))
 
-#print(data["history"])
 freq_d, freq_r = calculate_tuple_freq_distribution(data["history"])
 print(freq_d)
 

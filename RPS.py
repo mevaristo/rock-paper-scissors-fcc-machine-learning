@@ -1,5 +1,6 @@
 import random
 import math
+from typing import Tuple
 
 QUINCY = 'quincy'
 ABBEY = 'abbey'
@@ -33,7 +34,7 @@ data = { "history": [] }
 # It is not a very good player so you will need to change the code to pass the challenge.
 
 
-def player(prev_play, opponent_history=[]):
+def player(prev_play, opponent_history=[], my_history=[]):
     # opponent = guess_opponent(prev_play)
     opponent = ABBEY
     
@@ -46,21 +47,13 @@ def player(prev_play, opponent_history=[]):
     #guess = post_strategy(opponent, prev_play, guess)
     print('guess:', guess)
     # print("prev:", prev_play, "guess:", guess)
+    my_history.append(guess)
 
     return guess
 
-def calculate_random_play(prev_play, opponent):
+def calculate_random_play(prev_play, opponent, my_guess):
     return random.randint(0, 2)
 
-def post_strategy(opponent, prev_play, guess):
-    if opponent == ABBEY:
-        if prev_play == ROCK:
-            guess = PAPER
-        if prev_play == PAPER:
-            guess = SCISSORS if random.randint(0, 1) == 1 else PAPER
-        if prev_play == SCISSORS:
-            guess = ROCK if random.randint(0, 1) == 1 else SCISSORS
-    return guess
 
 def calculate_tuple_freq_distribution(freq_history: list[str]):
     rr = (ROCK, ROCK)
@@ -125,12 +118,17 @@ def calculate_tuple_freq_distribution(freq_history: list[str]):
 
 
 
-empty_plays = 0
-def guess_opponent(prev_play: str) -> str:
-    global empty_plays
+def guess_opponent(play_history: str) -> Tuple(str, float):
+    # TODO: change function to a more robust approach
+    # guess the player based on playing pattern, starting with the first move
+
+
+
     if prev_play == EMPTY_PLAY:
-        empty_plays += 1
-    return OPPONENTS[empty_plays]
+        return (OPPONENTS[random.randint], 0.25)
+    elif prev_play ==
+    
+    return (OPPONENTS[random.randint], 0.25)
 
 
 
@@ -168,6 +166,7 @@ class MarkovChainPlayer:
                 ],
             ABBEY: [
                 # abbey = {
+                #
                 # 10m run directly with proportions
                 # ('R', 'R'): 6171559, 
                 # ('R', 'P'): 864101, 
@@ -178,10 +177,17 @@ class MarkovChainPlayer:
                 # ('S', 'S'): 432784, 
                 # ('S', 'P'): 321282, 
                 # ('S', 'R'): 80845}
+                #
                 # proportions:
                 # ('R', 'R'): 0.8672565613096679, ('R', 'P'): 0.12142754559816171, ('R', 'S'): 0.01131589309217044, 
                 # ('P', 'P'): 0.4214537452029161, ('P', 'S'): 0.15696268389736742, ('P', 'R'): 0.4215835708997165, 
                 # ('S', 'S'): 0.5183594419045863, ('S', 'P'): 0.3848098779390857, ('S', 'R'): 0.09683068015632804}
+                #
+                # I'm going to calculate Abbey's matrix based on a forgetful window instead of a lot of runs, as it seems they adapt
+                # and counter moves
+                #
+                # Also, I'm going to use a higher order matrix, using more states to calculate it 
+                # ([Rij * RPij * RSij * PPij *...] instead of [Rij * Pij * Sij] matrix)
                 [0.867, 0.121, 0.012],
                 [0.42, 0.157, 0.423],
                 [0.518, 0.384, 0.098]
@@ -203,6 +209,7 @@ class MarkovChainPlayer:
         return (guess_index + 1) % 3
 
     def calculate_markov_chain_play(self, prev_play: str, opponent: str) -> str:
+    def calculate_markov_chain_play(self, prev_play: str, opponent: str, guess: str) -> str:
         if prev_play == EMPTY_PLAY:
             if opponent == QUINCY:
                 return PAPER_N
@@ -213,6 +220,9 @@ class MarkovChainPlayer:
 
         print(self.state_vectors[opponent])
         return self.decide_play_by_state_vector(self.state_vectors[opponent])
+
+    def calculate_markov_chain_play_higher_order(self, prev_play: str, opponent: str, *args: Tuple[str, ...]) -> str:
+        pass
 
     def map_current_state(self, prev_play):
         return self.state_map[prev_play]
